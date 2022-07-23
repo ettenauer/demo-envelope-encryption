@@ -75,3 +75,12 @@ resource "azurerm_key_vault_access_policy" "client" {
     create_before_destroy = true
   }
 }
+
+data "azurerm_subscription" "subscription" {
+}
+
+resource "azurerm_role_assignment" "role_contributor" {
+  scope                = data.azurerm_subscription.subscription.id
+  role_definition_name = "Contributor"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
