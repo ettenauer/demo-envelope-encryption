@@ -5,10 +5,9 @@ using Azure.Storage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Specialized;
 using System.Text;
-using System.Text.Json;
 
 const string AccountName = "sadevweuenvencdemo";
-const string KeyName = "demokey";
+const string KeyName = "KEK";
 const string ContainerName = "testcontainer";
 const string FileName = "file";
 const string KeyVault = "https://kv-dev-weu-envencdemo.vault.azure.net";
@@ -31,7 +30,7 @@ do
     await containerClient.CreateIfNotExistsAsync();
     var blobClient = containerClient.GetBlobClient(FileName);
 
-    Console.WriteLine($"Press [1] to write blob, [2] to read blob, [3] to rotate key, [Esc] to exit");
+    Console.WriteLine($"Press [1] to write blob, [2] to read blob, [3] to rotate KEK, [Esc] to exit");
 
     try
     {
@@ -55,7 +54,7 @@ do
                 var keyVaultKey = await keyClient.RotateKeyAsync(KeyName);
                 //Note: need to be recreated to use new key
                 serviceClient = CreateBlobServiceClient(keyVaultKey.Value.Id, AccountName, credentials);
-                Print($"\nKey rotated, new version [{keyVaultKey.Value.Id}]\n", ConsoleColor.Green);
+                Print($"\nKEK rotated, new version [{keyVaultKey.Value.Id}]\n", ConsoleColor.Green);
                 break;
             case ConsoleKey.Escape:
                 shouldExit = true;

@@ -58,14 +58,10 @@ resource "azurerm_key_vault_access_policy" "client" {
   key_permissions = [
     "create",
     "get",
-    "purge",
-    "recover",
-    "delete"
-  ]
-
-  secret_permissions = [
-    "set",
-    "get",
+    "list",
+    "update",
+    "import",
+    "restore",
     "purge",
     "recover",
     "delete"
@@ -79,8 +75,29 @@ resource "azurerm_key_vault_access_policy" "client" {
 data "azurerm_subscription" "subscription" {
 }
 
+resource "azurerm_role_assignment" "blob_contributor" {
+  scope                = data.azurerm_subscription.subscription.id
+  role_definition_name = "Storage Blob Data Contributor"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
+
 resource "azurerm_role_assignment" "role_contributor" {
   scope                = data.azurerm_subscription.subscription.id
   role_definition_name = "Contributor"
   principal_id         = data.azurerm_client_config.current.object_id
+}
+
+resource "azurerm_key_vault_key" "KEK" {
+  name         = "KEK"
+  key_vault_id = azurerm_key_vault.keyvault.id
+  key_type     = "RSA"
+  key_size     = 2048
+  key_opts = [
+    "decrypt",
+    "encrypt",
+    "sign",
+    "unwrapKey",
+    "verify",
+    "wrapKey",
+  ]
 }
