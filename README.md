@@ -6,9 +6,9 @@
 - IDE (VS-Code, VS-Studio, Rider, etc.)
 
 ## Install Azure Resources
-- az login
-- terraform init
-- terraform apply -var-file=terraform.tfvars -compact-warnings -auto-approve
-
+- ´az login´
+- ´terraform init´
+- ´terraform apply -var-file=terraform.tfvars -compact-warnings -auto-approve´
 
 ## Execute Demo
+- open and start ´BlobDemoApp.sln´
